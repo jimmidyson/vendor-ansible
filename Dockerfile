@@ -1,15 +1,10 @@
-FROM centos:7.6.1810
+FROM debian:buster-slim
 
-RUN yum -y install gcc libffi-devel make openssl-devel python-devel python-setuptools
-
-RUN easy_install pip 
+RUN apt-get update && \
+    apt-get install -y python python-pip python3 python3-pip libffi-dev && \
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade setuptools --user
-
-RUN curl -L https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz | tar xz -C /usr/src && \
-    cd /usr/src/Python-3.7.4 && \
-    ./configure --prefix=/usr --enable-optimizations && \
-    make altinstall
-
-RUN pip3.7 install --upgrade setuptools --user
+RUN pip3 install --upgrade setuptools --user
 
